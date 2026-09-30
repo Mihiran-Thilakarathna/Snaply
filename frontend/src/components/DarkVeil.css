@@ -1,0 +1,7 @@
+.darkveil-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: auto;          /* smooth bilinear upscale — no blocky pixels */
+  image-rendering: -webkit-optimize-contrast; /* Safari fallback */
+}
