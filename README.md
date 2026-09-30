@@ -1,84 +1,84 @@
-# Snaply
+<div align="center">
+  <img src="frontend/public/favicon.svg" alt="Snaply Logo" width="120" height="120">
+  
+  # ⚡ Snaply
+  **The ultimate, lightning-fast media downloader**
 
-YouTube video (up to 4K) and MP3/audio downloader with playlist batch-download support.
+  <p>
+    <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" /></a>
+    <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" alt="FastAPI" /></a>
+    <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind" /></a>
+    <a href="https://github.com/yt-dlp/yt-dlp"><img src="https://img.shields.io/badge/yt--dlp-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="yt-dlp" /></a>
+  </p>
+</div>
 
-## Stack
+## 📖 About
 
-- **Backend:** FastAPI, yt-dlp, ffmpeg, Celery, Redis
-- **Frontend:** React (Vite) + TypeScript + Tailwind CSS
+**Snaply** is a sleek, modern web application designed for fast and effortless media downloading. Powered by the incredible `yt-dlp` in the backend, it supports extracting video and audio from hundreds of platforms.
 
-## Project Structure
+Whether you're looking to save a quick video or download high-quality audio, Snaply provides a clean, user-friendly interface to get the job done smoothly without the clutter of traditional downloaders.
 
-```
-Snaply/
-├─ backend/
-│  ├─ app/
-│  │  ├─ api/routes.py        # /api/info, /api/download, /api/progress, /api/file
-│  │  ├─ services/            # yt-dlp + ffmpeg logic
-│  │  ├─ tasks.py             # Celery download task
-│  │  ├─ celery_app.py
-│  │  ├─ config.py
-│  │  └─ main.py
-│  ├─ requirements.txt
-│  └─ Dockerfile
-├─ frontend/
-│  ├─ src/
-│  │  ├─ components/          # UrlInput, FormatSelector, VideoPreviewCard, PlaylistView, ProgressBar
-│  │  ├─ lib/api.ts
-│  │  ├─ types/
-│  │  └─ App.tsx
-│  ├─ package.json
-│  └─ Dockerfile
-└─ docker-compose.yml
-```
+## ✨ Features
 
-## Local Development (without Docker)
+- 🚀 **Lightning Fast:** Built with a highly optimized FastAPI backend and asynchronous processing using Celery.
+- 🎨 **Modern UI/UX:** A stunning, responsive React frontend styled with Tailwind CSS, featuring a beautiful dark mode.
+- 🌍 **Universal Support:** Download from YouTube, Vimeo, Twitter, TikTok, and hundreds of other websites supported by yt-dlp.
+- 📊 **Real-time Progress:** Track your download status and progress in real-time.
+- 🛠️ **Format Selection:** Choose your desired video resolution and audio format before downloading.
 
-**Prerequisites:** Python 3.11+, Node 20+, ffmpeg installed and on PATH, Redis running locally.
+## 💻 Tech Stack
 
-### 1. Redis (quickest via Docker)
-```bash
-docker run -p 6379:6379 redis:7-alpine
-```
+**Frontend:**
+- React (TypeScript)
+- Vite
+- Tailwind CSS
 
-### 2. Backend
-```bash
-cd backend
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-copy .env.example .env
-uvicorn app.main:app --reload --port 8000
-```
+**Backend:**
+- Python & FastAPI
+- Celery (Task Queue)
+- Redis (Message Broker)
+- yt-dlp (Media Extraction Core)
 
-### 3. Celery worker (separate terminal, same venv)
-```bash
-cd backend
-venv\Scripts\activate
-celery -A app.celery_app worker --loglevel=info --pool=solo
-```
-(`--pool=solo` is needed on Windows.)
+## 🚀 Getting Started
 
-### 4. Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
+### Prerequisites
 
-Open http://localhost:5173
+- **[Node.js](https://nodejs.org/)** (v16+)
+- **[Python](https://www.python.org/)** (3.9+)
+- **[FFmpeg](https://ffmpeg.org/download.html)** - Crucial for media processing with `yt-dlp`. (Make sure it is added to your system's PATH variable).
+- **Redis Server** - Required for the Celery background task queue.
+  - *Windows Users:* We highly recommend **[Memurai](https://www.memurai.com/)** (a native Redis-compatible datastore for Windows). Download and install the free Developer edition.
+  - *Linux/macOS Users:* Install native **[Redis](https://redis.io/docs/install/)**.
 
-## Run Everything With Docker
+### Installation & Running (Windows)
 
-```bash
-docker-compose up --build
-```
+The easiest way to get started on Windows is by using the provided PowerShell script. It automatically sets up the Python virtual environment, installs all Node/Python dependencies, and starts both the frontend and backend servers.
 
-- Frontend → http://localhost:5173
-- Backend → http://localhost:8000
+1. **Install Memurai** (using the link above) and ensure the Memurai service is running.
+2. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Mihiran-Thilakarathna/Snaply.git
+   cd Snaply
+   ```
+3. **Run the startup script:**
+   Open PowerShell (you may need to bypass the execution policy if scripts are disabled) and execute:
+   ```powershell
+   .\run.ps1
+   ```
+   
+   *(If you are on Linux/macOS or prefer Docker, you can use the provided `docker-compose.yml` file)*:
+   ```bash
+   docker-compose up --build
+   ```
 
-## Notes
+3. **Open Snaply:**
+   Navigate to `http://localhost:5173` in your web browser.
 
-- Downloaded files are stored in `backend/downloads/` and should be periodically cleaned up (see hosting guide — add a cron job deleting files older than a few hours).
-- Audio bitrate is decoupled from video resolution tiers and exposed directly (320/256/192/128/96 kbps) since that reflects what yt-dlp/ffmpeg actually control.
-- Respect YouTube's Terms of Service and applicable copyright law in your jurisdiction before deploying this publicly.
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! 
+Feel free to check out the [issues page](https://github.com/Mihiran-Thilakarathna/Snaply/issues) if you want to contribute.
+
+## 📝 License
+
+This project is licensed under the MIT License.
